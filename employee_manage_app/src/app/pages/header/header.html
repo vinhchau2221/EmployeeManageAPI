@@ -1,0 +1,203 @@
+
+<div class="admin-layout">
+
+  <!-- Mobile backdrop -->
+  @if (isMobileOpen) {
+    <div
+      class="sidebar-backdrop"
+      (click)="closeMobileSidebar()">
+    </div>
+  }
+
+  <!-- Sidebar -->
+  <aside
+    class="admin-sidebar"
+    [class.collapsed]="isCollapsed"
+    [class.mobile-open]="isMobileOpen">
+
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <i class="fa-solid fa-layer-group"></i>
+      </div>
+
+      @if (!isCollapsed) {
+        <span class="brand-text">AdminFlow</span>
+      }
+
+      <button
+        class="btn-close-sidebar"
+        type="button"
+        aria-label="Close sidebar"
+        (click)="closeMobileSidebar()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-menu">
+
+      <p class="menu-heading">
+        @if (!isCollapsed) {
+          MAIN MENU
+        } @else {
+          <span class="menu-divider"></span>
+        }
+      </p>
+
+      @for (item of navItems; track item.route) {
+        <a
+          class="nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          [title]="isCollapsed ? item.label : ''"
+          (click)="closeMobileSidebar()">
+
+          <i [class]="item.icon"></i>
+
+          @if (!isCollapsed) {
+            <span>{{ item.label }}</span>
+          }
+        </a>
+      }
+
+      <!-- Reports submenu -->
+      <button
+        type="button"
+        class="nav-item nav-button"
+        [class.active]="reportsExpanded"
+        [title]="isCollapsed ? 'Reports' : ''"
+        (click)="toggleReports()">
+
+        <i class="fa-solid fa-file-lines"></i>
+
+        @if (!isCollapsed) {
+          <span>Reports</span>
+          <i
+            class="fa-solid submenu-arrow"
+            [class.fa-chevron-down]="!reportsExpanded"
+            [class.fa-chevron-up]="reportsExpanded">
+          </i>
+        }
+      </button>
+
+      @if (reportsExpanded && !isCollapsed) {
+        <div class="submenu">
+          @for (item of reportItems; track item.route) {
+            <a
+              class="nav-item submenu-item"
+              [routerLink]="item.route"
+              routerLinkActive="active"
+              (click)="closeMobileSidebar()">
+
+              <i [class]="item.icon"></i>
+              <span>{{ item.label }}</span>
+            </a>
+          }
+        </div>
+      }
+
+      <p class="menu-heading secondary-heading">
+        @if (!isCollapsed) {
+          PREFERENCES
+        } @else {
+          <span class="menu-divider"></span>
+        }
+      </p>
+
+      <a
+        class="nav-item"
+        routerLink="/settings"
+        routerLinkActive="active"
+        [title]="isCollapsed ? 'Settings' : ''"
+        (click)="closeMobileSidebar()">
+
+        <i class="fa-solid fa-gear"></i>
+
+        @if (!isCollapsed) {
+          <span>Settings</span>
+        }
+      </a>
+
+      <a
+        class="nav-item"
+        routerLink="/help"
+        routerLinkActive="active"
+        [title]="isCollapsed ? 'Help Center' : ''"
+        (click)="closeMobileSidebar()">
+
+        <i class="fa-solid fa-circle-question"></i>
+
+        @if (!isCollapsed) {
+          <span>Help Center</span>
+        }
+      </a>
+
+    </div>
+
+    <!-- User profile -->
+    <div class="sidebar-profile">
+      <div class="profile-avatar">A</div>
+
+      @if (!isCollapsed) {
+        <div class="profile-info">
+          <span class="profile-name">Admin User</span>
+          <span class="profile-role">Administrator</span>
+        </div>
+
+        <i class="fa-solid fa-ellipsis profile-more"></i>
+      }
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="admin-main">
+
+    <header class="topbar">
+      <button
+        type="button"
+        class="toggle-btn"
+        aria-label="Toggle sidebar"
+        [attr.aria-expanded]="!isCollapsed"
+        (click)="toggleSidebar()">
+
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <button
+        type="button"
+        class="mobile-toggle-btn"
+        aria-label="Open navigation"
+        (click)="toggleMobileSidebar()">
+
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <div class="topbar-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input
+          type="search"
+          class="form-control"
+          placeholder="Search anything..."
+          aria-label="Search">
+      </div>
+
+      <div class="topbar-actions">
+        <button
+          class="topbar-icon"
+          type="button"
+          aria-label="Notifications">
+          <i class="fa-regular fa-bell"></i>
+          <span class="notification-dot"></span>
+        </button>
+
+        <div class="topbar-avatar">A</div>
+      </div>
+    </header>
+
+    <section class="page-content">
+      <router-outlet></router-outlet>
+    </section>
+
+  </main>
+</div>
+

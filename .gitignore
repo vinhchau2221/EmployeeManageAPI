@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Employee.api/.vs
+/Employee.api/bin/Debug/net10.0
+/Employee.api/obj
+/Employee.api/Properties
+/employee_manage_app/.vscode
+/Employee.api/appsettings.Development.json
+/Employee.api/appsettings.json
