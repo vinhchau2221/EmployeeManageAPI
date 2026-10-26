@@ -1,1 +1,132 @@
-<p>designation works!</p>
+<div class="container py-4">
+
+   <!-- Page Header -->
+   <div class="mb-4">
+      <h3 class="page-title">Designation Management</h3>
+      <p class="text-muted mb-0">
+         Create and manage designations
+      </p>
+   </div>
+
+   <!-- Designation Form -->
+   <div class="card mb-4">
+      <div class="card-body p-4">
+         <h5 class="mb-4">Designation Details</h5>
+
+         <div class="row align-items-end g-3">
+            <!-- Department Name: col-3 -->
+            <div class="col-md-3">
+               <label for="designationName" class="form-label">
+                  Department
+               </label>
+               <select class="form-select" [(ngModel)]="curDepartment" name="departmentSelect"
+                  (change)="onDepartmentChange()">
+                  @for (item of departments(); track item.departmentId) {
+                  <option [ngValue]="item">{{ item.departmentName }}</option>
+                  }
+               </select>
+            </div>
+            <form class="col-md-9">
+               <div class="row align-items-end g-2">
+                  <!-- Designation Name: col-3 -->
+                  <div class="col-md-3">
+                     <label for="designationName" class="form-label">
+                        Designation Name
+                     </label>
+                     <input type="text" [(ngModel)]="newDesignationObj.designationName" class="form-control"
+                        id="designationName" name="designationName" placeholder="Enter designation name">
+                  </div>
+
+                  <!-- Is Active: col-2 -->
+                  <!-- <div class="col-md-2">
+                     <div class="form-check mb-2">
+                        <input class="form-check-input"  type="checkbox" id="isActive" name="isActive" [(ngModel)]="newDesignationObj.isActive">
+                        <label class="form-check-label" for="isActive">
+                           Is Active
+                        </label>
+                     </div>
+                  </div> -->
+
+                  <!-- Buttons -->
+                  <div class="col-md-4">
+                     @if (newDesignationObj.designationId != 0) {
+                     <button type="button" class="btn btn-primary px-4 me-2" (click)="onSaveDesignation()">
+                        Update
+                     </button>
+                     }@else {
+                     <button type="button" class="btn btn-success px-4 me-2" (click)="onSaveDesignation()">
+                        Save
+                     </button>
+                     }
+
+                     <button type="reset" class="btn btn-outline-secondary px-4" (click)="onResetForm()">
+                        Reset
+                     </button>
+                  </div>
+               </div>
+            </form>
+         </div>
+
+      </div>
+   </div>
+
+   <!-- Designation Table -->
+   <div class="card">
+      <div class="card-body p-4">
+
+         <div class="d-flex justify-content-between
+                            align-items-center mb-3">
+            <h5 class="mb-0">Designation List</h5>
+            <span class="text-muted small">
+               Total Designations: {{ designations()?.length || 0 }}
+            </span>
+         </div>
+
+         <div class="table-responsive">
+            <table class="table table-hover mb-0">
+               <thead>
+                  <tr>
+                     <th style="width: 8%;">#</th>
+                     <th>Department</th>
+                     <th style="width: 28%;">Designation Name</th>
+                     <th style="width: 18%;">Is Active</th>
+                     <th style="width: 20%;">Actions</th>
+                  </tr>
+               </thead>
+
+               <tbody>
+                  @for (designation of designations(); track $index) {
+                  <tr>
+                     <td>{{ $index + 1 }}</td>
+                     <td>{{ curDepartment()?.departmentName }}</td>
+                     <td>{{ designation.designationName }}</td>
+                     <td>
+                        <span class="status-badge status-active">
+                           Active
+                           <!-- {{ designation.isActive ? 'Active' : 'Inactive' }} -->
+                        </span>
+                     </td>
+                     <td>
+                        <button type="button" class="btn btn-sm btn-outline-primary me-1"
+                           (click)="onEditDesignation(designation)">
+                           Edit
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger"
+                           (click)="onDeleteDesignation(designation.designationId)">
+                           Delete
+                        </button>
+                     </td>
+                  </tr>
+                  }@empty {
+                  <tr>
+                     <td colspan="5" class="text-center">
+                        There are no items.
+                     </td>
+                  </tr>
+                  }
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>

@@ -20,6 +20,7 @@ namespace Employee.api.DTOs
         public string SortBy { get; set; } = "designationName"; // designationId | departmentId | designationName
         public string SortDir { get; set; } = "asc";            // asc | desc
         public string? Search { get; set; }                     // optional filter on name
+        public int? DepartmentID { get; set; } = 0;
     }
 
     public class PagedResult<T>

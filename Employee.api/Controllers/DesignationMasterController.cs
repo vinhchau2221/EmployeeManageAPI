@@ -1,6 +1,5 @@
 ﻿using Employee.api.DTOs;
 using Employee.api.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +19,10 @@ namespace Employee.api.Controllers
             [FromQuery] DesignationQuery q, CancellationToken ct)
         {
             IQueryable<Designation> query = _db.Designations.AsNoTracking();
+
+            if (q.DepartmentID.HasValue && q.DepartmentID.Value > 0) { 
+                query= query.Where(w => w.departmentId == q.DepartmentID.Value);
+            }
 
             if (!string.IsNullOrWhiteSpace(q.Search))
             {

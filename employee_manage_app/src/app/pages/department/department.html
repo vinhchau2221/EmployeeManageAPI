@@ -1,1 +1,114 @@
-<p>department works!</p>
+<div class="container py-4">
+
+   <!-- Page Header -->
+   <div class="mb-4">
+      <h3 class="page-title">Department Management</h3>
+      <p class="text-muted mb-0">
+         Create and manage departments
+      </p>
+   </div>
+
+   <!-- Department Form -->
+   <div class="card mb-4">
+      <div class="card-body p-4">
+         <h5 class="mb-4">Department Details</h5>
+
+         <form>
+            <div class="row align-items-end g-3">
+
+               <!-- Department Name: col-3 -->
+               <div class="col-md-3">
+                  <label for="departmentName" class="form-label">
+                     Department Name
+                  </label>
+                  <input type="text" [(ngModel)]="newDeptObj.departmentName" class="form-control" id="departmentName" name="departmentName"
+                     placeholder="Enter department name">
+               </div>
+
+               <!-- Is Active: col-2 -->
+               <div class="col-md-2">
+                  <div class="form-check mb-2">
+                     <input class="form-check-input"  type="checkbox" id="isActive" name="isActive" [(ngModel)]="newDeptObj.isActive">
+                     <label class="form-check-label" for="isActive">
+                        Is Active
+                     </label>
+                  </div>
+               </div>
+
+               <!-- Buttons -->
+               <div class="col-md-7">
+                  @if (newDeptObj.departmentId != 0) {
+                     <button type="button" class="btn btn-primary px-4 me-2" (click)="onSaveDepartment()">
+                        Update
+                     </button>
+                  }@else {
+                     <button type="button" class="btn btn-success px-4 me-2" (click)="onSaveDepartment()">
+                        Save
+                     </button>
+                  }
+
+                  <button type="reset" class="btn btn-outline-secondary px-4" (click)="onResetForm()">
+                     Reset
+                  </button>
+               </div>
+
+            </div>
+         </form>
+      </div>
+   </div>
+
+   <!-- Department Table -->
+   <div class="card">
+      <div class="card-body p-4">
+
+         <div class="d-flex justify-content-between
+                            align-items-center mb-3">
+            <h5 class="mb-0">Department List</h5>
+            <span class="text-muted small">
+               Total Departments: {{ departments()?.length || 0 }}
+            </span>
+         </div>
+
+         <div class="table-responsive">
+            <table class="table table-hover mb-0">
+               <thead>
+                  <tr>
+                     <th style="width: 8%;">#</th>
+                     <th>Department Name</th>
+                     <th style="width: 18%;">Is Active</th>
+                     <th style="width: 20%;">Actions</th>
+                  </tr>
+               </thead>
+
+               <tbody>
+                  @for (dept of departments(); track $index) {
+                     <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ dept.departmentName }}</td>
+                        <td>
+                           <span class="status-badge status-active">
+                              {{ dept.isActive ? 'Active' : 'Inactive' }}
+                           </span>
+                        </td>
+                        <td>
+                           <button type="button" class="btn btn-sm btn-outline-primary me-1" (click)="onEditDepartment(dept)">
+                              Edit
+                           </button>
+                           <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDeleteDepartment(dept.departmentId)">
+                              Delete
+                           </button>
+                        </td>
+                     </tr>
+                  }@empty {
+                     <tr>
+                        <td colspan="4" class="text-center">
+                           There are no items.
+                        </td>
+                     </tr>
+                  }
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>

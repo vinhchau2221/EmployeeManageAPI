@@ -34,6 +34,9 @@ namespace Employee.api.Controllers
         [HttpPost]
         public async Task<ActionResult<Department>> Create(DepartmentRequest req, CancellationToken ct)
         {
+            if (await _db.Departments.AnyAsync(e => EF.Functions.Collate(e.departmentName, "SQL_Latin1_General_CP1_CI_AS") == req.departmentName, ct))
+                return Conflict(DepartmentExists(req.departmentName.Trim()));
+
             var dept = new Department
             {
                 departmentName = req.departmentName.Trim(),
@@ -53,6 +56,9 @@ namespace Employee.api.Controllers
             var dept = await _db.Departments.FindAsync([id], ct);
             if (dept is null) return NotFound();
 
+            if (await _db.Departments.AnyAsync(e => EF.Functions.Collate(e.departmentName, "SQL_Latin1_General_CP1_CI_AS") == req.departmentName && e.departmentId != id, ct))
+                return Conflict(DepartmentExists(req.departmentName.Trim()));
+
             dept.departmentName = req.departmentName.Trim();
             dept.isActive = req.isActive;
 
@@ -70,5 +76,12 @@ namespace Employee.api.Controllers
 
             return deleted == 0 ? NotFound() : NoContent();
         }
+
+        private static ProblemDetails DepartmentExists(string name) => new()
+        {
+            Status = StatusCodes.Status409Conflict,
+            Title = "Duplicate department name",
+            Detail = $"A department with name '{name}' already exists."
+        };
     }
 }

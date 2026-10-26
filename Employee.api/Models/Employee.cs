@@ -26,6 +26,6 @@ namespace Employee.api.Models
         public int designationId { get; set; }
         public DateTime? createdDate { get; set; }
         public DateTime? modifiedDate { get; set; }
-        public string role { get; set; }
+        public string? role { get; set; }
     }
 }

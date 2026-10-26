@@ -1,0 +1,33 @@
+/* Slide in from the right and fade in when appearing */
+@keyframes toastFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fade out when the toast is about to be removed */
+@keyframes toastFadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* Trigger the animation when the element appears in the DOM */
+.toast-custom {
+  animation: toastFadeIn 0.25s ease-out forwards;
+}
+
+/* Additional class to trigger the fade-out before removing the toast from the signal */
+.toast-custom.toast-leaving {
+  animation: toastFadeOut 0.2s ease-in forwards;
+}
